@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RORO Heart 💖</title>
+    <style>
+        body {
+            margin: 0;
+            background: black;
+            overflow: hidden;
+        }
+
+        canvas {
+            display: block;
+        }
+
+        #name {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #ff80aa;
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+            font-size: 48px;
+            letter-spacing: 6px;
+            text-align: center;
+            opacity: 0;
+            animation: write 2s steps(4) 1.5s forwards, float 1.2s ease-in-out 3.5s infinite alternate;
+        }
+
+        @keyframes write {
+            from {
+                opacity: 0;
+                clip-path: inset(0 100% 0 0);
+            }
+
+            to {
+                opacity: 1;
+                clip-path: inset(0 0 0 0);
+            }
+        }
+
+        @keyframes float {
+            from {
+                transform: translate(-50%, -52%);
+            }
+
+            to {
+                transform: translate(-50%, -48%);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="heart"></canvas>
+    <div id="name">RORO</div>
+
+    <script>
+        const canvas = document.getElementById('heart');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const colors = ["#ff99cc", "#ff6699", "#ff3366", "#ff0066", "#ff0044"];
+        let t = 0;
+
+        function heartFunc(k) {
+            const x = 16 * Math.pow(Math.sin(k), 3);
+            const y = 13 * Math.cos(k) - 5 * Math.cos(2 * k) - 2 * Math.cos(3 * k) - Math.cos(4 * k);
+            return { x, y };
+        }
+
+        function drawHeart() {
+            if (t > 1000) return;
+            const k = t / 30;
+            const { x, y } = heartFunc(k);
+            const scale = 15;
+            ctx.strokeStyle = colors[t % colors.length];
+            ctx.beginPath();
+            ctx.moveTo(canvas.width / 2, canvas.height / 2);
+            ctx.lineTo(canvas.width / 2 + x * scale, canvas.height / 2 - y * scale);
+            ctx.stroke();
+            t++;
+            requestAnimationFrame(drawHeart);
+        }
+
+        ctx.lineWidth = 2;
+        ctx.shadowColor = '#ff66aa';
+        ctx.shadowBlur = 10;
+        drawHeart();
+    </script>
+</body>
+
+</html>
